@@ -1,0 +1,1106 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="울진 해양과학 1박 2일 프로그램 중학생 동해 탐구노트">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>동해 탐구노트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: 해양 관측 노트. 위에서 아래로 "수면 → 심해" 순서로 내려가는 한 단 구성, 수심 탐사기가 중심 */
+:root {
+  --bg: #f3f6f7;          /* 바랜 해도 종이 */
+  --surface: #ffffff;
+  --ink: #0f2a3a;         /* 깊은 바다 남색 */
+  --muted: #4d6676;
+  --line: #cdd9df;
+  --accent: #e8590c;      /* 부표 주황 */
+  --accent-ink: #ffffff;
+  --sea-1: #6fc3d6;
+  --sea-2: #1f6e8c;
+  --sea-3: #0b2f45;
+  --sea-4: #03121c;
+  --warm: #d9480f;
+  --cold: #1c7ed6;
+  --ok: #2b8a3e;
+  --bad: #c92a2a;
+  --chip: #e3eef2;
+  --f-display: "Do Hyeon", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #06141d; --surface: #0c2130; --ink: #e2eef3; --muted: #93adbb; --line: #1d3a4c;
+    --accent: #ff7a33; --accent-ink: #1a0b02; --chip: #12303f;
+    --warm: #ff8a4c; --cold: #5aa9ff; --ok: #69db7c; --bad: #ff8787;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #06141d; --surface: #0c2130; --ink: #e2eef3; --muted: #93adbb; --line: #1d3a4c;
+  --accent: #ff7a33; --accent-ink: #1a0b02; --chip: #12303f;
+  --warm: #ff8a4c; --cold: #5aa9ff; --ok: #69db7c; --bad: #ff8787;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 16px; line-height: 1.7;
+  padding-inline: 16px; padding-block: 0 64px;
+  word-break: keep-all;
+}
+.wrap { max-width: 860px; margin-inline: auto; }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 400; line-height: 1.2; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(28px, 5vw, 38px); }
+h3 { font-size: 22px; }
+p { margin: 0; max-width: 65ch; }
+.label { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* 상단 탭 */
+nav.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+  margin-inline: -16px; padding: 10px 16px;
+}
+nav.top ul { list-style: none; margin: 0 auto; padding: 0; max-width: 860px; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+nav.top a {
+  display: block; white-space: nowrap; text-decoration: none; font-size: 14px; font-weight: 500;
+  padding: 6px 12px; border-radius: 999px; background: var(--chip); color: var(--ink);
+}
+nav.top a:hover { background: var(--accent); color: var(--accent-ink); }
+
+/* 히어로 */
+header.hero { padding-block: 48px 32px; display: grid; gap: 16px; }
+header.hero h1 { font-size: clamp(44px, 10vw, 84px); letter-spacing: -.01em; }
+header.hero h1 span { color: var(--accent); }
+header.hero .lead { font-size: 18px; color: var(--muted); }
+.coord { font-family: var(--f-mono); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 16px; }
+
+section { padding-block: 48px 8px; display: grid; gap: 20px; scroll-margin-top: 64px; }
+section > header { display: grid; gap: 8px; }
+
+/* 숫자 비교 */
+.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.compare div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 4px; }
+.compare b { font-family: var(--f-mono); font-size: 28px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.compare small { color: var(--muted); font-size: 14px; }
+.bars { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 10px; }
+.bar { display: grid; grid-template-columns: 96px 1fr 80px; gap: 10px; align-items: center; font-size: 14px; }
+.bar i { display: block; height: 14px; border-radius: 3px; background: var(--sea-2); min-width: 3px; }
+.bar i.hl { background: var(--accent); }
+.bar span:last-child { font-family: var(--f-mono); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* 수심 탐사기 */
+.probe { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+.column {
+  position: relative; border-radius: 10px; min-height: 460px;
+  background: linear-gradient(to bottom, var(--sea-1) 0%, var(--sea-2) 18%, var(--sea-3) 45%, var(--sea-4) 100%);
+}
+.column .tick { position: absolute; left: 6px; font-family: var(--f-mono); font-size: 11px; color: #ffffffcc; transform: translateY(-50%); }
+.column .tick::after { content: ""; position: absolute; left: -6px; top: 50%; width: 4px; border-top: 1px solid #ffffff99; }
+.column { overflow: hidden; }
+.diver { position: absolute; left: 40px; width: 72px; transform: translateY(-50%); transition: top .35s cubic-bezier(.3,1.4,.5,1); z-index: 2; }
+.diver svg { display: block; width: 100%; animation: bob 2s ease-in-out infinite; }
+.prop { transform-box: fill-box; transform-origin: center; animation: spin .25s linear infinite; }
+.blink { transform-box: fill-box; transform-origin: center; animation: blink 4s infinite; }
+.beam { transition: opacity .3s; }
+.critter { position: absolute; right: 6px; width: 34px; transform: translateY(-50%); z-index: 1; }
+.critter svg { display: block; width: 100%; }
+.critter.crab svg { animation: scuttle 2.2s ease-in-out infinite; }
+.critter.jelly svg { animation: jelly 3s ease-in-out infinite; }
+.critter.angler svg { animation: bob 3s ease-in-out infinite; }
+.lure { animation: glow 1.6s ease-in-out infinite; }
+.readout { display: grid; gap: 16px; align-content: start; min-width: 0; }
+.depth-big { font-family: var(--f-mono); font-size: clamp(40px, 8vw, 60px); font-variant-numeric: tabular-nums; line-height: 1; }
+.depth-big small { font-size: .4em; color: var(--muted); }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+.zone { font-family: var(--f-display); font-size: 22px; }
+.gauges { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.gauge { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; }
+.gauge b { font-family: var(--f-mono); font-size: 20px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.gauge small { color: var(--muted); font-size: 13px; line-height: 1.4; }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.presets button, .btn {
+  font: inherit; font-size: 14px; cursor: pointer; border: 1px solid var(--line); background: var(--chip); color: var(--ink);
+  padding: 6px 12px; border-radius: 999px;
+}
+.presets button:hover, .btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+.life { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.life li { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 8px 10px; border-radius: 6px; font-size: 14px; color: var(--muted); }
+.life li.here { background: var(--chip); color: var(--ink); font-weight: 500; }
+.life li span:last-child { font-family: var(--f-mono); font-size: 12px; }
+.note { font-size: 13px; color: var(--muted); }
+
+/* 해류 */
+.currents { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: center; }
+.currents svg { width: 100%; height: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.facts { display: grid; gap: 12px; }
+.fact { display: grid; grid-template-columns: 14px 1fr; gap: 10px; }
+.fact::before { content: ""; width: 14px; height: 14px; border-radius: 3px; margin-top: 6px; background: var(--c); }
+
+/* 카드형 주제 */
+.topics { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.topic { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 8px; align-content: start; }
+.topic p { font-size: 15px; }
+.think { border-left: 3px solid var(--accent); padding-left: 12px; font-size: 15px; }
+
+/* 퀴즈 */
+.quiz { display: grid; gap: 14px; }
+.q { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 10px; }
+.q h3 { font-family: var(--f-body); font-weight: 700; font-size: 17px; }
+.q .num { font-family: var(--f-mono); color: var(--accent); margin-right: 6px; }
+.opts { display: grid; gap: 6px; }
+.opts button { text-align: left; font: inherit; font-size: 15px; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
+.opts button:hover:not(:disabled) { border-color: var(--accent); }
+.opts button:disabled { cursor: default; }
+.opts button.right { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, var(--bg)); }
+.opts button.wrong { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 12%, var(--bg)); }
+.explain { font-size: 14px; color: var(--muted); }
+.score { position: sticky; bottom: 12px; justify-self: start; background: var(--ink); color: var(--bg); border-radius: 999px; padding: 8px 16px; font-family: var(--f-mono); font-size: 14px; display: flex; gap: 12px; align-items: center; }
+.score button { font: inherit; background: none; border: 0; color: inherit; text-decoration: underline; cursor: pointer; }
+
+/* 활동지 */
+.days { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.day { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 12px; align-content: start; }
+.mission { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 15px; }
+.mission input[type="checkbox"] { width: 20px; height: 20px; margin-top: 4px; accent-color: var(--accent); }
+textarea { width: 100%; min-height: 72px; font: inherit; font-size: 14px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); resize: vertical; grid-column: 2; }
+.progress { position: relative; height: 8px; background: var(--chip); border-radius: 999px; margin-top: 18px; }
+.progress i { display: block; height: 100%; background: var(--accent); width: 0; border-radius: 999px; transition: width .4s cubic-bezier(.3,1.4,.5,1); }
+.rider { position: absolute; top: 50%; left: 0; width: 34px; transform: translateY(-62%); transition: left .4s cubic-bezier(.3,1.4,.5,1); }
+.rider svg { display: block; width: 100%; animation: bob 1.8s ease-in-out infinite; }
+.mission input:checked + label { animation: pop .45s cubic-bezier(.3,1.6,.5,1); color: var(--muted); }
+
+/* 연구 현장 */
+.station { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; align-items: start; }
+.station svg { width: 100%; height: auto; max-width: 260px; justify-self: center; }
+.station-text { display: grid; gap: 10px; min-width: 0; }
+.spec { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
+.spec div { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+.spec dt { font-size: 12px; color: var(--muted); }
+.spec dd { margin: 0; font-family: var(--f-mono); font-size: 15px; font-variant-numeric: tabular-nums; }
+.sub-h { font-size: 26px; margin-top: 12px; }
+.spin-cups { transform-box: fill-box; transform-origin: center; animation: cups 1.2s linear infinite; }
+.sea-line { animation: sealine 3s linear infinite; }
+@keyframes cups { to { transform: rotateY(360deg); } }
+@keyframes sealine { to { transform: translateX(40px); } }
+@media (max-width: 640px) { .station { grid-template-columns: 1fr; } }
+
+/* 제출 · 결과 */
+.submit { background: var(--surface); border: 2px solid var(--accent); border-radius: 12px; padding: 18px; display: grid; gap: 12px; }
+.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.fields label { display: grid; gap: 4px; }
+.fields input { font: inherit; font-size: 15px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { position: relative; }
+.btn:disabled { opacity: .5; cursor: default; }
+.status { font-size: 14px; color: var(--muted); }
+.status.ok { color: var(--ok); font-weight: 500; }
+.status.err { color: var(--bad); }
+.q.still button { animation: none; }
+.tablebox { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 500; color: var(--muted); font-size: 13px; }
+td.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.row { cursor: pointer; }
+tr.row:hover td { background: var(--chip); }
+tr.detail td { background: var(--bg); }
+.detail dl { margin: 0; display: grid; gap: 8px; }
+.detail dt { font-weight: 700; font-size: 13px; }
+.detail dd { margin: 0; white-space: pre-wrap; color: var(--muted); }
+.del { font: inherit; font-size: 13px; background: none; border: 0; color: var(--muted); cursor: pointer; text-decoration: underline; white-space: nowrap; }
+.del.armed { color: var(--bad); font-weight: 700; }
+
+/* 귀여운 움직임 */
+header.hero h1 span { display: inline-block; animation: bob 3s ease-in-out infinite; }
+.scene {
+  position: relative; height: 150px; border-radius: 14px; overflow: hidden;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--sea-1) 35%, var(--bg)), color-mix(in srgb, var(--sea-2) 45%, var(--bg)));
+}
+.wave {
+  position: absolute; inset: 0 0 auto 0; height: 18px; background: var(--bg); z-index: 2;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 18'%3E%3Cpath d='M0 0H80V9Q60 18 40 9T0 9Z'/%3E%3C/svg%3E") 0 0 / 80px 18px repeat-x;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 18'%3E%3Cpath d='M0 0H80V9Q60 18 40 9T0 9Z'/%3E%3C/svg%3E") 0 0 / 80px 18px repeat-x;
+  animation: wave 5s linear infinite;
+}
+.swimmer { position: absolute; left: -80px; top: var(--y); width: var(--w, 56px); animation: swim var(--t, 16s) linear infinite; animation-delay: var(--dl, 0s); }
+.swimmer.back { animation-direction: reverse; }
+.swimmer svg { display: block; width: 100%; animation: bob 2.4s ease-in-out infinite; }
+.weed { position: absolute; bottom: -4px; width: 20px; height: 60px; transform-origin: bottom center; animation: sway 3.5s ease-in-out infinite; }
+.bubble {
+  position: absolute; bottom: -12px; left: var(--x); width: var(--s, 10px); aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+  border: 1.5px solid #ffffffcc; background: radial-gradient(circle at 30% 30%, #ffffffcc 0 18%, #ffffff22 40%, transparent 70%);
+  animation: rise var(--t, 6s) ease-in infinite; animation-delay: var(--dl, 0s);
+}
+.bubble.once { bottom: auto; animation: rise 1.8s ease-out 1 forwards; z-index: 1; }
+.opts button { position: relative; }
+.opts button.right { animation: pop .5s cubic-bezier(.3,1.6,.5,1); }
+.opts button.wrong { animation: shake .45s; }
+.burst { position: absolute; left: var(--x); top: 50%; width: var(--s); aspect-ratio: 1; border-radius: 50%; border: 2px solid var(--ok); pointer-events: none; animation: burst .9s ease-out forwards; }
+.score.bump { animation: pop .45s cubic-bezier(.3,1.6,.5,1); }
+
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-5px) rotate(3deg); } }
+@keyframes swim { to { left: 100%; } }
+@keyframes wave { to { -webkit-mask-position: 80px 0; mask-position: 80px 0; } }
+@keyframes sway { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(8deg); } }
+@keyframes rise { 0% { transform: translate(0, 0); opacity: 0; } 10% { opacity: 1; } 50% { transform: translate(6px, -80px); } 100% { transform: translate(-4px, -170px); opacity: 0; } }
+@keyframes spin { 50% { transform: scaleY(.15); } }
+@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+@keyframes scuttle { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-6px) rotate(-4deg); } }
+@keyframes jelly { 0%, 100% { transform: translateY(0) scaleY(1); } 40% { transform: translateY(-8px) scaleY(.88); } }
+@keyframes glow { 50% { opacity: .3; } }
+@keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.05); } 100% { transform: scale(1); } }
+@keyframes shake { 20% { transform: translateX(-6px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+@keyframes burst { from { transform: translate(-50%, -50%) scale(.3); opacity: 1; } to { transform: translate(calc(-50% + var(--dx)), calc(-50% - 46px)) scale(1); opacity: 0; } }
+
+footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); display: grid; gap: 6px; }
+
+@media (max-width: 640px) {
+  .probe { grid-template-columns: 100px minmax(0, 1fr); padding: 14px; gap: 14px; }
+  .diver { left: 34px; width: 60px; }
+  .critter { width: 26px; right: 4px; }
+  .currents { grid-template-columns: 1fr; }
+  .bar { grid-template-columns: 72px 1fr 64px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="목차">
+  <ul>
+    <li><a href="#sea">동해는 어떤 바다?</a></li>
+    <li><a href="#probe">수심 탐사기</a></li>
+    <li><a href="#currents">해류와 조경수역</a></li>
+    <li><a href="#uljin">울진의 바다</a></li>
+    <li><a href="#climate">뜨거워지는 바다</a></li>
+    <li><a href="#now">연구 현장과 트렌드</a></li>
+    <li><a href="#quiz">퀴즈</a></li>
+    <li><a href="#mission">1박 2일 미션</a></li>
+    <li id="navResults" hidden><a href="#results">결과 모아보기</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="fish" viewBox="0 0 64 40">
+        <path d="M12 20 L1 8 Q4 20 1 32 Z" fill="currentColor" opacity=".8"/>
+        <path d="M28 7 Q35 -1 42 6" fill="currentColor"/>
+        <ellipse cx="35" cy="20" rx="24" ry="15" fill="currentColor"/>
+        <circle cx="47" cy="16" r="5" fill="#fff"/><circle cx="48.5" cy="16.5" r="2.6" fill="#0f2a3a"/><circle cx="49.4" cy="15.2" r="1" fill="#fff"/>
+        <ellipse cx="44" cy="25" rx="3.5" ry="2" fill="#ff8fab" opacity=".8"/>
+        <path d="M53 23.5 q2.2 2 4.4 0" stroke="#0f2a3a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </symbol>
+    </defs>
+  </svg>
+  <header class="hero">
+    <p class="label">울진 해양과학 1박 2일 · 중학생 탐구노트</p>
+    <h1>동해, <span>깊이</span><br>들여다보기</h1>
+    <p class="lead">울진 앞바다는 수심 수천 미터까지 이어지는 깊은 바다의 입구입니다. 이틀 동안 바다를 직접 보고, 과학관에서 배우고, 이 노트에 기록해 봅시다.</p>
+    <p class="coord"><span>울진 · 약 36.9°N 129.4°E</span><span>동해 평균 수심 약 1,700 m</span><span>최대 수심 약 4,000 m</span></p>
+    <div class="scene" aria-hidden="true">
+      <div class="wave"></div>
+      <div class="swimmer" style="--y:38px;--t:18s;--w:58px;color:#ffa94d"><svg viewBox="0 0 64 40"><use href="#fish"/></svg></div>
+      <div class="swimmer back" style="--y:78px;--t:22s;--dl:-9s;--w:44px;color:#74c0fc"><svg viewBox="0 0 64 40"><use href="#fish" transform="matrix(-1 0 0 1 64 0)"/></svg></div>
+      <div class="swimmer" style="--y:100px;--t:15s;--dl:-5s;--w:34px;color:#ff8fab"><svg viewBox="0 0 64 40"><use href="#fish"/></svg></div>
+      <div class="swimmer" style="--y:112px;--t:15s;--dl:-5.7s;--w:22px;color:#ff8fab"><svg viewBox="0 0 64 40"><use href="#fish"/></svg></div>
+      <svg class="weed" style="left:8%" viewBox="0 0 20 60"><path d="M10 60 C2 45 18 35 10 20 S6 5 10 0" stroke="#40c057" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+      <svg class="weed" style="left:11%;height:44px;animation-delay:-1.2s" viewBox="0 0 20 60"><path d="M10 60 C2 45 18 35 10 20 S6 5 10 0" stroke="#2f9e44" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+      <svg class="weed" style="left:84%;animation-delay:-2s" viewBox="0 0 20 60"><path d="M10 60 C2 45 18 35 10 20 S6 5 10 0" stroke="#40c057" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+      <span class="bubble" style="--x:18%;--s:10px;--t:6s"></span>
+      <span class="bubble" style="--x:20%;--s:6px;--t:5s;--dl:-2s"></span>
+      <span class="bubble" style="--x:47%;--s:12px;--t:7s;--dl:-4s"></span>
+      <span class="bubble" style="--x:66%;--s:7px;--t:5.5s;--dl:-1s"></span>
+      <span class="bubble" style="--x:88%;--s:9px;--t:6.5s;--dl:-3s"></span>
+    </div>
+  </header>
+
+  <!-- 1. 동해 -->
+  <section id="sea">
+    <header>
+      <p class="label">01 · 바다 비교</p>
+      <h2>동해는 어떤 바다일까?</h2>
+      <p>우리나라를 둘러싼 세 바다는 생김새가 전혀 다릅니다. 서해는 얕고 갯벌이 넓으며, 동해는 해안에서 조금만 나가도 급격히 깊어집니다.</p>
+    </header>
+    <div class="bars" aria-label="세 바다의 평균 수심 비교">
+      <p class="label">평균 수심 (대략값)</p>
+      <div class="bar"><span>서해</span><i style="width:2.6%"></i><span>약 44 m</span></div>
+      <div class="bar"><span>남해</span><i style="width:5.9%"></i><span>약 100 m</span></div>
+      <div class="bar"><span>동해</span><i class="hl" style="width:100%"></i><span>약 1,700 m</span></div>
+    </div>
+    <div class="compare">
+      <div><span class="label">한라산 높이</span><b>1,947 m</b><small>동해 평균 수심에 넣으면 꼭대기만 조금 보입니다.</small></div>
+      <div><span class="label">롯데월드타워</span><b>555 m</b><small>세 개를 쌓아도 동해 평균 수심에 못 미칩니다.</small></div>
+      <div><span class="label">동해 가장 깊은 곳</span><b>약 4,000 m</b><small>햇빛이 전혀 닿지 않는 캄캄한 세계입니다.</small></div>
+    </div>
+  </section>
+
+  <!-- 2. 수심 탐사기 -->
+  <section id="probe">
+    <header>
+      <p class="label">02 · 직접 해 보기</p>
+      <h2>수심 탐사기</h2>
+      <p>막대를 움직여 동해 속으로 내려가 보세요. 깊어질수록 수압, 빛, 수온이 어떻게 바뀌는지 숫자로 확인할 수 있습니다.</p>
+    </header>
+    <div class="probe">
+      <div class="column" id="column" aria-hidden="true">
+        <div class="critter crab" data-d="300"><svg viewBox="0 0 44 30">
+          <path d="M8 18 l-6 6 M10 21 l-5 7 M36 18 l6 6 M34 21 l5 7" stroke="#e03131" stroke-width="2" stroke-linecap="round"/>
+          <line x1="16" y1="11" x2="15" y2="5" stroke="#c92a2a" stroke-width="2"/><line x1="28" y1="11" x2="29" y2="5" stroke="#c92a2a" stroke-width="2"/>
+          <circle cx="15" cy="4.5" r="2.8" fill="#fff"/><circle cx="15.4" cy="4.8" r="1.4" fill="#0f2a3a"/>
+          <circle cx="29" cy="4.5" r="2.8" fill="#fff"/><circle cx="29.4" cy="4.8" r="1.4" fill="#0f2a3a"/>
+          <circle cx="5" cy="11" r="4" fill="#e03131"/><circle cx="39" cy="11" r="4" fill="#e03131"/>
+          <ellipse cx="22" cy="17" rx="14" ry="8" fill="#fa5252"/>
+          <path d="M19 18 q3 2.5 6 0" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg></div>
+        <div class="critter jelly" data-d="700"><svg viewBox="0 0 30 40">
+          <path d="M7 16 q-3 6 0 12 t0 10 M15 16 q3 6 0 12 t0 10 M23 16 q-3 6 0 12 t0 10" stroke="#f783ac" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M2 17 A13 13 0 0 1 28 17 Z" fill="#f783ac"/>
+          <circle cx="11" cy="11" r="1.6" fill="#0f2a3a"/><circle cx="19" cy="11" r="1.6" fill="#0f2a3a"/>
+          <path d="M13.5 13.5 q1.5 1.4 3 0" stroke="#0f2a3a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </svg></div>
+        <div class="critter angler" data-d="2500"><svg viewBox="0 0 48 36">
+          <path d="M30 10 q4 -9 12 -6" stroke="#adb5bd" stroke-width="1.5" fill="none"/>
+          <circle class="lure" cx="42" cy="4" r="6" fill="#ffe066" opacity=".35"/><circle class="lure" cx="42" cy="4" r="3" fill="#ffe066"/>
+          <path d="M8 22 L1 14 L1 30 Z" fill="#748ffc"/>
+          <ellipse cx="25" cy="22" rx="18" ry="12" fill="#748ffc"/>
+          <circle cx="32" cy="17" r="3.6" fill="#fff"/><circle cx="33" cy="17.3" r="1.8" fill="#0f2a3a"/>
+          <path d="M33 27 l2.5 -2 l2 2.6 l2 -2.6 l2 2.2" stroke="#fff" stroke-width="1.3" fill="none" stroke-linejoin="round"/>
+        </svg></div>
+        <div class="diver" id="diver"><svg viewBox="0 0 110 56">
+          <path class="beam" id="beam" d="M66 30 L110 12 L110 48 Z" fill="#fff3bf" opacity="0"/>
+          <rect x="34" y="2" width="5" height="16" rx="2" fill="#f08c00"/><rect x="34" y="2" width="13" height="5" rx="2.5" fill="#f08c00"/>
+          <rect x="8" y="28" width="7" height="4" fill="#f08c00"/>
+          <g class="prop"><ellipse cx="7" cy="23" rx="3" ry="7" fill="#e8590c"/><ellipse cx="7" cy="37" rx="3" ry="7" fill="#e8590c"/></g>
+          <ellipse cx="40" cy="30" rx="28" ry="18" fill="#ffd43b" stroke="#e8590c" stroke-width="2"/>
+          <circle cx="24" cy="30" r="4" fill="#fff3bf" stroke="#e8590c" stroke-width="1.5"/>
+          <circle cx="50" cy="28" r="10" fill="#d0ebff" stroke="#e8590c" stroke-width="2"/>
+          <g class="blink"><circle cx="46.5" cy="27" r="2" fill="#0f2a3a"/><circle cx="53.5" cy="27" r="2" fill="#0f2a3a"/></g>
+          <path d="M47 31.5 q3 3 6 0" stroke="#0f2a3a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <ellipse cx="44" cy="33" rx="2.2" ry="1.3" fill="#ff8fab"/><ellipse cx="56" cy="33" rx="2.2" ry="1.3" fill="#ff8fab"/>
+        </svg></div>
+      </div>
+      <div class="readout">
+        <div>
+          <p class="label">현재 수심</p>
+          <p class="depth-big"><span id="depthNum">0</span><small> m</small></p>
+          <p class="zone" id="zoneName">표층</p>
+        </div>
+        <label for="depth" class="label">수심 조절 (0 ~ 4,000 m)</label>
+        <input type="range" id="depth" min="0" max="1000" value="0" step="1">
+        <div class="presets" aria-label="수심 바로가기">
+          <button type="button" data-d="10">스쿠버 10 m</button>
+          <button type="button" data-d="300">대게 300 m</button>
+          <button type="button" data-d="1000">빛의 끝 1,000 m</button>
+          <button type="button" data-d="1700">동해 평균</button>
+          <button type="button" data-d="4000">가장 깊은 곳</button>
+        </div>
+        <div class="gauges">
+          <div class="gauge"><span class="label">수압</span><b id="gPress">1.0 기압</b><small id="gPressNote">손톱(1 cm²) 위에 약 1 kg</small></div>
+          <div class="gauge"><span class="label">햇빛</span><b id="gLight">100 %</b><small>수면 빛을 100으로 볼 때</small></div>
+          <div class="gauge"><span class="label">수온 (가을 기준)</span><b id="gTemp">약 18 °C</b><small id="gTempNote">계절에 따라 크게 변함</small></div>
+        </div>
+        <div>
+          <p class="label" style="margin-bottom:6px">이 깊이 근처에 사는 동해 생물</p>
+          <ul class="life" id="life"></ul>
+        </div>
+        <p class="note">수온·햇빛 값은 원리를 이해하기 위한 모식값입니다. 실제 바다는 계절, 날씨, 장소에 따라 다릅니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 해류 -->
+  <section id="currents">
+    <header>
+      <p class="label">03 · 바닷물의 흐름</p>
+      <h2>따뜻한 물과 차가운 물이 만나는 곳</h2>
+      <p>동해에는 남쪽에서 올라오는 따뜻한 해류와 북쪽에서 내려오는 차가운 해류가 있습니다. 두 물이 만나는 곳을 <b>조경수역</b>이라고 부릅니다.</p>
+    </header>
+    <div class="currents">
+      <svg viewBox="0 0 320 360" role="img" aria-label="동해 해류 모식도: 동한난류는 남쪽에서 북쪽으로, 북한한류는 북쪽에서 남쪽으로 흐르고 중간에서 만난다">
+        <defs>
+          <marker id="aw" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--warm)"/></marker>
+          <marker id="ac" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--cold)"/></marker>
+        </defs>
+        <rect x="0" y="0" width="90" height="360" fill="var(--chip)"/>
+        <text x="45" y="190" text-anchor="middle" font-size="14" fill="var(--muted)" font-family="IBM Plex Sans KR, sans-serif">한반도</text>
+        <path d="M110 330 C 130 260, 120 210, 150 170" stroke="var(--warm)" stroke-width="6" fill="none" marker-end="url(#aw)"/>
+        <text x="130" y="320" font-size="13" fill="var(--warm)" font-family="IBM Plex Sans KR, sans-serif" font-weight="700">동한난류 (따뜻함)</text>
+        <path d="M110 30 C 120 80, 112 120, 135 150" stroke="var(--cold)" stroke-width="6" fill="none" marker-end="url(#ac)"/>
+        <text x="130" y="44" font-size="13" fill="var(--cold)" font-family="IBM Plex Sans KR, sans-serif" font-weight="700">북한한류 (차가움)</text>
+        <ellipse cx="190" cy="165" rx="70" ry="28" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 4"/>
+        <text x="190" y="170" text-anchor="middle" font-size="14" fill="var(--ink)" font-family="Do Hyeon, sans-serif">조경수역</text>
+        <circle cx="92" cy="205" r="5" fill="var(--accent)"/>
+        <text x="100" y="222" font-size="12" fill="var(--ink)" font-family="IBM Plex Sans KR, sans-serif">울진</text>
+        <text x="310" y="350" text-anchor="end" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">모식도 · 실제 축척 아님</text>
+      </svg>
+      <div class="facts">
+        <div class="fact" style="--c: var(--warm)"><p><b>동한난류</b>는 쿠로시오 해류에서 갈라져 나온 쓰시마 난류가 동해안을 따라 북쪽으로 올라가는 흐름입니다.</p></div>
+        <div class="fact" style="--c: var(--cold)"><p><b>북한한류</b>는 북쪽의 차가운 물이 연안을 따라 남쪽으로 내려오는 흐름입니다.</p></div>
+        <div class="fact" style="--c: var(--accent)"><p><b>조경수역</b>에서는 영양염이 풍부해 플랑크톤이 많이 자라고, 이를 먹는 물고기가 모여 좋은 어장이 됩니다. 만나는 위치는 계절마다 오르내립니다.</p></div>
+        <p class="think">생각해 보기: 여름과 겨울 중 조경수역이 더 북쪽에 생기는 계절은 언제일까요? 그 이유는?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 울진 -->
+  <section id="uljin">
+    <header>
+      <p class="label">04 · 지역 탐구</p>
+      <h2>울진의 바다에서 찾아볼 것</h2>
+      <p>과학관 관람과 바닷가 활동을 할 때 아래 주제를 떠올리며 관찰해 보세요.</p>
+    </header>
+    <div class="topics">
+      <article class="topic">
+        <p class="label">수중 암초</p>
+        <h3>왕돌초</h3>
+        <p>울진 후포항에서 동쪽으로 약 25 km 떨어진 바닷속 암초 지대입니다. 따뜻한 물과 차가운 물이 함께 영향을 주어 다양한 해조류와 물고기가 살고, 해양보호구역으로 지정되어 보호받고 있습니다.</p>
+        <p class="think">왜 바닷속 암초 주변에 생물이 많이 모일까요?</p>
+      </article>
+      <article class="topic">
+        <p class="label">대표 수산물</p>
+        <h3>대게와 붉은대게</h3>
+        <p>울진 대게는 차갑고 깊은 바닥에 삽니다. 대게는 주로 수심 수백 m 안팎에, 붉은대게는 그보다 더 깊은 곳에 삽니다. 자원 보호를 위해 잡을 수 있는 크기와 기간이 정해져 있습니다.</p>
+        <p class="think">암컷 대게를 잡지 못하게 하는 이유는 무엇일까요?</p>
+      </article>
+      <article class="topic">
+        <p class="label">바다의 숲</p>
+        <h3>해조류와 갯녹음</h3>
+        <p>미역, 감태 같은 해조류 숲은 물고기의 집이자 산소 공장입니다. 바위가 하얗게 변하고 해조류가 사라지는 현상을 <b>갯녹음(백화 현상)</b>이라고 합니다.</p>
+        <p class="think">해안 바위에서 해조류가 있는 곳과 없는 곳을 비교해 보세요.</p>
+      </article>
+      <article class="topic">
+        <p class="label">바다와 사람</p>
+        <h3>해양 쓰레기</h3>
+        <p>바다로 들어간 플라스틱은 잘게 부서져 미세플라스틱이 되고, 생물의 몸속에 쌓일 수 있습니다. 해변 쓰레기 중에는 어업 도구와 일회용품이 많습니다.</p>
+        <p class="think">해변에서 본 쓰레기는 어디서 왔을까요? 종류별로 분류해 봅시다.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 5. 기후 -->
+  <section id="climate">
+    <header>
+      <p class="label">05 · 기후 변화</p>
+      <h2>뜨거워지는 우리 바다</h2>
+      <p>국립수산과학원 자료에 따르면 1968년 이후 우리 바다의 표층 수온은 약 1.4 °C 올랐습니다. 같은 기간 전 세계 바다 평균(약 0.7 °C)의 두 배 가까운 속도입니다.</p>
+    </header>
+    <div class="bars" aria-label="표층 수온 상승폭 비교">
+      <p class="label">1968년 이후 표층 수온 상승폭 (대략값)</p>
+      <div class="bar"><span>전 세계</span><i style="width:49%"></i><span>약 0.7 °C</span></div>
+      <div class="bar"><span>우리 바다</span><i class="hl" style="width:100%"></i><span>약 1.4 °C</span></div>
+    </div>
+    <div class="topics">
+      <article class="topic">
+        <p class="label">사라진 물고기</p>
+        <h3>명태</h3>
+        <p>한때 동해에서 많이 잡혔지만 지금은 거의 잡히지 않습니다. 차가운 물을 좋아하는 명태에게 동해가 점점 살기 어려운 바다가 되었고, 지나친 어획도 원인으로 꼽힙니다.</p>
+      </article>
+      <article class="topic">
+        <p class="label">늘어난 물고기</p>
+        <h3>방어 · 참다랑어</h3>
+        <p>따뜻한 물을 좋아하는 물고기가 예전보다 동해 북쪽에서 더 많이 잡히고 있습니다. 바다의 생물 지도가 바뀌고 있다는 신호입니다.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 6. 지금의 해양과학 -->
+  <section id="now">
+    <header>
+      <p class="label">06 · 연구 현장과 트렌드</p>
+      <h2>지금, 울진 바다에서 하는 과학</h2>
+      <p>울진에는 바다를 보여 주는 과학관과 바다를 재는 연구소가 함께 있습니다. 과학자들이 요즘 바다를 어떻게 연구하는지도 알아봅시다.</p>
+    </header>
+
+    <div class="station">
+      <svg viewBox="0 0 200 180" role="img" aria-label="왕돌초 해양과학기지 그림: 바다 위로 솟은 관측 플랫폼">
+        <rect x="0" y="108" width="200" height="72" fill="var(--sea-2)" opacity=".28"/>
+        <path d="M0 176 Q50 166 100 172 T200 170 V180 H0 Z" fill="var(--muted)" opacity=".45"/>
+        <g stroke="var(--muted)" stroke-width="4" stroke-linecap="round">
+          <line x1="70" y1="86" x2="58" y2="172"/><line x1="130" y1="86" x2="142" y2="172"/>
+          <line x1="88" y1="86" x2="84" y2="172"/><line x1="112" y1="86" x2="116" y2="172"/>
+        </g>
+        <g stroke="var(--muted)" stroke-width="2" opacity=".6"><line x1="62" y1="130" x2="138" y2="130"/><line x1="66" y1="104" x2="134" y2="104"/></g>
+        <rect x="52" y="56" width="96" height="32" rx="6" fill="#ffd43b" stroke="#e8590c" stroke-width="2"/>
+        <rect x="64" y="40" width="36" height="16" rx="3" fill="#fff3bf" stroke="#e8590c" stroke-width="2"/>
+        <line x1="128" y1="56" x2="128" y2="22" stroke="#e8590c" stroke-width="3"/>
+        <circle class="lure" cx="128" cy="18" r="5" fill="#fa5252"/>
+        <g class="spin-cups"><line x1="108" y1="34" x2="120" y2="34" stroke="#e8590c" stroke-width="2"/><circle cx="106" cy="34" r="3" fill="#e8590c"/><circle cx="122" cy="34" r="3" fill="#e8590c"/></g>
+        <line x1="114" y1="34" x2="114" y2="56" stroke="#e8590c" stroke-width="2"/>
+        <g class="blink"><circle cx="88" cy="70" r="3" fill="#0f2a3a"/><circle cx="112" cy="70" r="3" fill="#0f2a3a"/></g>
+        <path d="M94 77 q6 5 12 0" stroke="#0f2a3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="80" cy="77" rx="4" ry="2.2" fill="#ff8fab"/><ellipse cx="120" cy="77" rx="4" ry="2.2" fill="#ff8fab"/>
+        <g class="sea-line"><path d="M-40 110 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" stroke="var(--sea-2)" stroke-width="3" fill="none"/></g>
+        <circle cx="116" cy="150" r="4" fill="#fff" stroke="var(--sea-2)" stroke-width="2"/><line x1="116" y1="130" x2="116" y2="146" stroke="var(--sea-2)" stroke-width="1.5"/>
+        <text x="122" y="153" font-size="9" fill="var(--muted)" font-family="IBM Plex Sans KR, sans-serif">수중 센서</text>
+      </svg>
+      <div class="station-text">
+        <p class="label">2026년 6월 준공 · 한국해양과학기술원(KIOST)</p>
+        <h3>왕돌초 해양과학기지</h3>
+        <p>후포항 동쪽 바다의 수중 암초 왕돌초 위에 동해 최초의 해양과학기지가 세워졌습니다. 이어도(2003년), 가거초(2009년), 소청초(2014년)에 이은 우리나라 네 번째 기지로, 이로써 서해·남해·동해를 모두 관측하는 기지망이 갖춰졌습니다.</p>
+        <dl class="spec">
+          <div><dt>위치</dt><dd>후포항 동쪽 약 25 km</dd></div>
+          <div><dt>기초</dt><dd>수심 23 m 해저 암반</dd></div>
+          <div><dt>전체 높이</dt><dd>53 m</dd></div>
+          <div><dt>관측 장비</dt><dd>37종 86점</dd></div>
+        </dl>
+        <p>수온, 해수면 높이, 바닷속 생태계를 실시간으로 기록합니다. 동해가 따뜻해지는 아열대화와 갯녹음 같은 장기 변화를 추적하고, 어장 변화를 예측해 후포·죽변 어민들에게 조업 정보로도 제공할 예정입니다.</p>
+        <p class="think">생각해 보기: 인공위성이 있는데도 바다 한가운데에 기지를 세워 직접 재는 이유는 무엇일까요?</p>
+      </div>
+    </div>
+
+    <div class="topics">
+      <article class="topic">
+        <p class="label">이번 프로그램의 무대</p>
+        <h3>국립울진해양과학관</h3>
+        <p>2020년 7월 죽변면에 문을 연 해양과학관입니다. 바닷속전망대에서 동해 속을 직접 볼 수 있고, '심해 깊은바닷속으로' 같은 기획전과 해양환경 교육을 운영합니다. 2026년 6월에는 한국·미국·대만 청소년이 모여 블루카본과 AI 데이터 분석을 주제로 해양과학 워크숍을 열었습니다.</p>
+        <p class="think">관람할 때 찾아보기: 전시에서 '관측', '데이터', '기후'라는 말이 나오는 곳은 어디일까요?</p>
+      </article>
+      <article class="topic">
+        <p class="label">이웃 연구소</p>
+        <h3>KIOST 동해연구소</h3>
+        <p>울진 죽변에 있는 한국해양과학기술원의 연구소입니다. 동해의 해류와 수온, 수산자원 변화 같은 동해 연구를 하고, 왕돌초 해양과학기지 준공식도 이곳에서 열렸습니다.</p>
+        <p class="think">과학관은 바다를 알리고, 연구소는 바다를 연구합니다. 두 곳이 가까이 있으면 어떤 점이 좋을까요?</p>
+      </article>
+    </div>
+
+    <header>
+      <h3 class="sub-h">요즘 해양과학자들은 이렇게 연구해요</h3>
+    </header>
+    <div class="topics trends">
+      <article class="topic">
+        <p class="label">트렌드 1 · 로봇</p>
+        <h3>바다를 떠다니는 로봇 관측</h3>
+        <p>전 세계 바다에는 약 4천 개의 자동 관측 로봇(아르고 플로트)이 떠 있습니다. 혼자 수심 2,000 m까지 오르내리며 수온과 염분을 재고, 물 위로 올라오면 위성으로 자료를 보냅니다.</p>
+        <p class="think">사람이 직접 배를 타고 재는 방법과 비교해 장점과 단점은?</p>
+      </article>
+      <article class="topic">
+        <p class="label">트렌드 2 · 위성과 AI</p>
+        <h3>하늘에서 보는 바다</h3>
+        <p>우리나라 해양위성 천리안 2B호는 하늘에서 바다 색을 관측해 플랑크톤과 적조를 찾아냅니다. 쌓인 관측 자료를 AI로 분석해 파도, 적조, 어장 변화를 미리 예측하는 연구도 활발합니다.</p>
+        <p class="think">바닷물 색만 보고 무엇을 알 수 있을까요?</p>
+      </article>
+      <article class="topic">
+        <p class="label">트렌드 3 · 유전자</p>
+        <h3>물 한 컵으로 찾는 생물 (환경DNA)</h3>
+        <p>생물은 비늘, 점액, 배설물로 물속에 DNA를 남깁니다. 바닷물을 떠서 DNA를 분석하면 직접 잡거나 보지 않아도 그곳에 어떤 생물이 사는지 알 수 있습니다.</p>
+        <p class="think">이 방법은 희귀한 생물을 보호하는 데 어떻게 쓰일까요?</p>
+      </article>
+      <article class="topic">
+        <p class="label">트렌드 4 · 기후</p>
+        <h3>블루카본</h3>
+        <p>갯벌, 바다풀(잘피) 숲, 염생식물이 사는 습지는 이산화탄소를 흡수해 오래 저장합니다. 바다가 흡수하는 탄소를 블루카본이라고 하며, 기후 위기를 늦출 방법으로 주목받고 있습니다.</p>
+        <p class="think">갯녹음으로 바다숲이 사라지면 블루카본에는 어떤 영향이 있을까요?</p>
+      </article>
+      <article class="topic">
+        <p class="label">트렌드 5 · 탐사</p>
+        <h3>아직 모르는 바다 밑 지도</h3>
+        <p>바다 밑바닥은 아직 약 4분의 1 정도만 정밀한 지도가 있습니다. 2030년까지 전 세계 해저 지형을 모두 그리자는 국제 프로젝트(Seabed 2030)가 진행 중이고, 무인 잠수정과 자율운항 선박이 이 일을 돕고 있습니다.</p>
+        <p class="think">달 표면 지도보다 바다 밑 지도를 만들기가 더 어려운 이유는?</p>
+      </article>
+      <article class="topic">
+        <p class="label">트렌드 6 · 바이오</p>
+        <h3>해조류의 변신</h3>
+        <p>미역, 다시마 같은 해조류를 먹을거리를 넘어 플라스틱을 대신할 포장재, 화장품, 의약품 원료로 쓰는 연구가 늘고 있습니다. 바다 생물에서 새로운 쓸모를 찾는 분야를 해양바이오라고 합니다.</p>
+        <p class="think">해조류 포장재가 바다 쓰레기 문제에 어떤 도움이 될까요?</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 7. 퀴즈 -->
+  <section id="quiz">
+    <header>
+      <p class="label">07 · 확인 문제</p>
+      <h2>동해 퀴즈</h2>
+      <p>답을 고르면 바로 정답과 해설이 나옵니다. 둘째 날 정리 시간에 다시 풀어 보세요.</p>
+    </header>
+    <div class="quiz" id="quizBox"></div>
+    <div class="score" id="score" aria-live="polite"><span id="scoreText">0 / 0 맞힘</span><button type="button" id="quizReset">다시 풀기</button></div>
+  </section>
+
+  <!-- 7. 미션 -->
+  <section id="mission">
+    <header>
+      <p class="label">08 · 활동지</p>
+      <h2>1박 2일 탐구 미션</h2>
+      <p>미션을 마치면 체크하고, 알게 된 점을 짧게 적어 두세요. 기록은 지금 쓰는 기기의 브라우저에만 저장됩니다.</p>
+    </header>
+    <div class="progress" aria-hidden="true"><i id="bar"></i><span class="rider" id="rider"><svg viewBox="0 0 64 40" style="color:#ffa94d"><use href="#fish"/></svg></span></div>
+    <p class="note" id="progText">0 / 6 미션 완료</p>
+    <div class="days" id="days"></div>
+    <form class="submit" id="submitForm" novalidate>
+      <h3>선생님께 제출하기</h3>
+      <p class="note">미션 기록과 퀴즈 결과가 함께 제출됩니다. 고쳐서 다시 제출하면 마지막 제출 내용으로 바뀝니다.</p>
+      <div class="fields">
+        <label for="stuGroup"><span class="label">반 · 모둠</span><input id="stuGroup" type="text" maxlength="20" placeholder="예: 2반 3모둠" autocomplete="off"></label>
+        <label for="stuName"><span class="label">이름</span><input id="stuName" type="text" maxlength="20" placeholder="예: 김바다" autocomplete="off"></label>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn primary" id="submitBtn">제출하기</button>
+        <button type="button" class="btn" id="copyBtn" hidden>내 결과 복사하기</button>
+      </div>
+      <p class="status" id="submitStatus" aria-live="polite">연결을 확인하는 중…</p>
+    </form>
+  </section>
+
+  <!-- 8. 교사용 결과 -->
+  <section id="results" hidden>
+    <header>
+      <p class="label">교사용 · 선생님 화면에만 보임</p>
+      <h2>결과 모아보기</h2>
+      <p>학생이 제출하면 이 표에 바로 나타납니다. 학생 화면에는 이 부분이 보이지 않고, 학생은 서로의 제출 내용을 볼 수 없습니다.</p>
+    </header>
+    <div class="compare" id="summary"></div>
+    <div class="bars" id="qStats"><p class="label">문항별 정답률</p></div>
+    <div class="actions">
+      <button type="button" class="btn" id="csvBtn" hidden>엑셀용 CSV 저장</button>
+      <button type="button" class="btn" id="tsvBtn">표 복사 (엑셀에 붙여넣기)</button>
+    </div>
+    <div class="tablebox">
+      <table id="resTable">
+        <thead><tr><th>반 · 모둠</th><th>이름</th><th>미션</th><th>퀴즈</th><th>제출 시각</th><th></th></tr></thead>
+        <tbody id="resBody"></tbody>
+      </table>
+    </div>
+    <p class="note" id="resEmpty">아직 제출한 학생이 없습니다. 학생이 미션 활동지 아래의 '제출하기'를 누르면 여기에 실시간으로 나타납니다.</p>
+  </section>
+
+  <footer>
+    <p>수치는 교육용 대략값입니다. 정확한 값은 국립해양조사원, 국립수산과학원 등 공공기관 자료에서 확인할 수 있습니다.</p>
+    <p>연구 현장 참고: <a href="https://www.dt.co.kr/article/12066586" target="_blank" rel="noopener">디지털타임스, 왕돌초 해양과학기지 준공 (2026. 6. 9.)</a> · <a href="https://www.idaegu.co.kr/news/articleView.html?idxno=556149" target="_blank" rel="noopener">대구신문, 국립울진해양과학관 소개</a></p>
+    <p>울진 해양과학 1박 2일 프로그램 학습 자료</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  // ---------- 수심 탐사기 ----------
+  var MAX = 4000;
+  var range = document.getElementById('depth');
+  var column = document.getElementById('column');
+  var diver = document.getElementById('diver');
+  // 얕은 곳을 넓게 보이도록 제곱근 눈금 사용
+  function toPos(d) { return Math.sqrt(d / MAX); }
+  function fromSlider(v) { return Math.round(MAX * Math.pow(v / 1000, 2)); }
+  function toSlider(d) { return Math.round(1000 * Math.sqrt(d / MAX)); }
+
+  [0, 50, 200, 500, 1000, 2000, 3000, 4000].forEach(function (d) {
+    var t = document.createElement('span');
+    t.className = 'tick';
+    t.style.top = (3 + toPos(d) * 94) + '%';
+    t.textContent = d.toLocaleString('ko-KR');
+    column.appendChild(t);
+  });
+  column.querySelectorAll('.critter').forEach(function (c) { c.style.top = (3 + toPos(+c.dataset.d) * 94) + '%'; });
+
+  // 잠수정 뒤로 뽀글뽀글 거품
+  var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function puff() {
+    if (calm) return;
+    var b = document.createElement('span');
+    b.className = 'bubble once';
+    b.style.top = diver.style.top;
+    b.style.left = (diver.offsetLeft - 2 + Math.random() * 8) + 'px';
+    b.style.setProperty('--s', (5 + Math.random() * 6) + 'px');
+    column.appendChild(b);
+    setTimeout(function () { b.remove(); }, 1900);
+  }
+  setInterval(puff, 1400);
+  var lastPuff = 0;
+
+  var LIFE = [
+    { n: '미역 · 감태 (해조류)', a: 0, b: 20 },
+    { n: '방어', a: 0, b: 150 },
+    { n: '살오징어', a: 0, b: 500 },
+    { n: '명태 (지금은 거의 사라짐)', a: 100, b: 500 },
+    { n: '대게', a: 150, b: 600 },
+    { n: '붉은대게', a: 400, b: 2300 },
+    { n: '심해 생물 (아직 모르는 것이 많음)', a: 1000, b: 4000 }
+  ];
+  var lifeEl = document.getElementById('life');
+  LIFE.forEach(function (x) {
+    var li = document.createElement('li');
+    li.innerHTML = '<span></span><span></span>';
+    li.children[0].textContent = x.n;
+    li.children[1].textContent = x.a.toLocaleString('ko-KR') + '–' + x.b.toLocaleString('ko-KR') + ' m';
+    x.el = li;
+    lifeEl.appendChild(li);
+  });
+
+  function zone(d) {
+    if (d < 1) return '수면';
+    if (d <= 200) return '햇빛층 (유광층)';
+    if (d <= 1000) return '어스름층 (약광층)';
+    return '어둠층 (무광층)';
+  }
+  function temp(d) {
+    // 가을철 동해의 대략적인 모식: 표층 약 18°C → 300m 부근 약 1°C → 깊은 곳 0~1°C (동해 고유수)
+    if (d <= 30) return 18;
+    if (d <= 300) return 18 - 17 * Math.pow((d - 30) / 270, 0.7);
+    return Math.max(0.3, 1 - (d - 300) / 4000);
+  }
+
+  function render(d) {
+    document.getElementById('depthNum').textContent = d.toLocaleString('ko-KR');
+    document.getElementById('zoneName').textContent = zone(d);
+    diver.style.top = (3 + toPos(d) * 94) + '%';
+    document.getElementById('beam').setAttribute('opacity', d > 150 ? Math.min(0.85, (d - 150) / 900).toFixed(2) : 0);
+    var atm = 1 + d / 10;
+    document.getElementById('gPress').textContent = (atm < 10 ? atm.toFixed(1) : Math.round(atm).toLocaleString('ko-KR')) + ' 기압';
+    var kg = 1.033 * atm;
+    document.getElementById('gPressNote').textContent = '손톱(1 cm²) 위에 약 ' + (kg < 10 ? kg.toFixed(1) : Math.round(kg).toLocaleString('ko-KR')) + ' kg';
+    var light = 100 * Math.exp(-d / 28);
+    document.getElementById('gLight').textContent =
+      light >= 1 ? light.toFixed(light >= 10 ? 0 : 1) + ' %' :
+      light >= 0.001 ? light.toFixed(3) + ' %' : '거의 0';
+    var t = temp(d);
+    document.getElementById('gTemp').textContent = '약 ' + (t >= 10 ? Math.round(t) : t.toFixed(1)) + ' °C';
+    document.getElementById('gTempNote').textContent = d >= 300 ? '일 년 내내 거의 변하지 않음' : '계절에 따라 크게 변함';
+    LIFE.forEach(function (x) { x.el.classList.toggle('here', d >= x.a && d <= x.b); });
+  }
+  range.addEventListener('input', function () {
+    render(fromSlider(+range.value));
+    var now = Date.now();
+    if (now - lastPuff > 120) { lastPuff = now; puff(); }
+  });
+  document.querySelectorAll('.presets button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var d = +b.dataset.d;
+      range.value = toSlider(d);
+      render(d);
+      puff(); setTimeout(puff, 150); setTimeout(puff, 300);
+    });
+  });
+  render(0);
+
+  // ---------- 퀴즈 ----------
+  var QUIZ = [
+    { q: '우리나라 세 바다 중 평균 수심이 가장 깊은 바다는?', o: ['서해', '남해', '동해'], a: 2, e: '동해의 평균 수심은 약 1,700 m로, 약 44 m인 서해보다 40배 가까이 깊습니다.' },
+    { q: '수심 10 m 내려갈 때마다 수압은 대략 얼마씩 늘어날까?', o: ['0.1 기압', '1 기압', '10 기압'], a: 1, e: '물기둥 10 m의 무게는 공기 전체가 누르는 힘(1 기압)과 비슷합니다. 그래서 수심 100 m에서는 대기압을 더해 약 11 기압입니다.' },
+    { q: '햇빛이 들어와 식물성 플랑크톤이 광합성을 할 수 있는 층은?', o: ['유광층 (약 200 m까지)', '약광층', '무광층'], a: 0, e: '광합성에 충분한 빛은 대략 수심 200 m까지만 들어옵니다. 그 아래로는 빛이 급격히 약해집니다.' },
+    { q: '동해안을 따라 남쪽에서 북쪽으로 올라가는 따뜻한 해류는?', o: ['북한한류', '동한난류', '황해난류'], a: 1, e: '동한난류는 쿠로시오에서 갈라진 쓰시마 난류의 한 갈래로, 동해안을 따라 북쪽으로 흐릅니다.' },
+    { q: '난류와 한류가 만나 좋은 어장이 되는 곳을 무엇이라 할까?', o: ['조경수역', '대륙붕', '해구'], a: 0, e: '조경수역은 영양염이 풍부해 플랑크톤이 많고, 물고기가 많이 모입니다.' },
+    { q: '울진 후포 앞바다에 있는 해양보호구역 수중 암초의 이름은?', o: ['독도', '왕돌초', '이어도'], a: 1, e: '왕돌초는 후포항에서 동쪽으로 약 25 km 떨어진 수중 암초로, 다양한 생물이 사는 해양보호구역입니다.' },
+    { q: '동해에서 명태가 거의 잡히지 않게 된 원인으로 꼽히는 것은?', o: ['수온 상승과 지나친 어획', '바닷물 염분 증가', '해류가 멈춰서'], a: 0, e: '차가운 물을 좋아하는 명태는 바다가 따뜻해지고 어린 명태(노가리)까지 많이 잡히면서 크게 줄었습니다.' },
+    { q: '바위의 해조류가 사라지고 하얗게 변하는 현상은?', o: ['적조', '갯녹음', '용승'], a: 1, e: '갯녹음(백화 현상)은 해조류 숲이 사라지는 현상으로, 수온 상승과 성게 등 해조류를 먹는 생물의 증가가 원인으로 꼽힙니다.' },
+    { q: '2026년 왕돌초에 세워진 동해 최초의 해양과학기지가 하는 일이 아닌 것은?', o: ['수온과 해수면 높이 실시간 관측', '동해 아열대화와 갯녹음 추적', '바닷물로 전기를 만들어 육지에 공급'], a: 2, e: '왕돌초 해양과학기지는 37종 86점의 장비로 수온, 해수면, 바닷속 생태계를 관측하고 어장 변화 예측에 자료를 제공합니다. 전기를 만드는 발전소는 아닙니다.' },
+    { q: '바닷물을 떠서 그 속에 남은 DNA로 어떤 생물이 사는지 알아내는 방법은?', o: ['환경DNA 분석', '음파 탐지', '위성 관측'], a: 0, e: '생물이 물속에 남긴 비늘, 점액 등의 DNA를 분석하는 환경DNA(eDNA) 방법은 생물을 잡지 않고도 조사할 수 있어 요즘 널리 쓰입니다.' }
+  ];
+  var box = document.getElementById('quizBox');
+  var answered = 0, correct = 0;
+  function updateScore() {
+    document.getElementById('scoreText').textContent = correct + ' / ' + answered + ' 맞힘 (전체 ' + QUIZ.length + '문제)';
+    var s = document.getElementById('score');
+    s.classList.remove('bump'); void s.offsetWidth; s.classList.add('bump');
+  }
+  function burst(btn) {
+    if (calm) return;
+    for (var k = 0; k < 8; k++) {
+      var p = document.createElement('span');
+      p.className = 'burst';
+      p.style.setProperty('--x', (10 + Math.random() * 80) + '%');
+      p.style.setProperty('--dx', (Math.random() * 60 - 30) + 'px');
+      p.style.setProperty('--s', (6 + Math.random() * 8) + 'px');
+      p.style.animationDelay = (Math.random() * 0.15) + 's';
+      btn.appendChild(p);
+      setTimeout(function (el) { el.remove(); }.bind(null, p), 1200);
+    }
+  }
+  // 고른 답은 이 기기에 저장해 두었다가 제출할 때 함께 보냄
+  var QKEY = 'uljin-ocean-quiz-v1', qa = [];
+  try { qa = JSON.parse(localStorage.getItem(QKEY) || '[]') || []; } catch (e) { qa = []; }
+  function saveQ() { try { localStorage.setItem(QKEY, JSON.stringify(qa)); } catch (e) {} }
+  function buildQuiz() {
+    box.innerHTML = ''; answered = 0; correct = 0;
+    QUIZ.forEach(function (item, i) {
+      var card = document.createElement('div'); card.className = 'q';
+      var h = document.createElement('h3');
+      h.innerHTML = '<span class="num">Q' + (i + 1) + '</span>';
+      h.appendChild(document.createTextNode(item.q));
+      var opts = document.createElement('div'); opts.className = 'opts';
+      var ex = document.createElement('p'); ex.className = 'explain'; ex.hidden = true;
+      function choose(j, quiet) {
+        var all = opts.querySelectorAll('button');
+        all.forEach(function (x) { x.disabled = true; });
+        all[item.a].classList.add('right');
+        if (j !== item.a) all[j].classList.add('wrong'); else { correct++; if (!quiet) burst(all[j]); }
+        answered++;
+        ex.textContent = (j === item.a ? '정답! ' : '아쉬워요. 정답은 "' + item.o[item.a] + '". ') + item.e;
+        ex.hidden = false;
+        if (!quiet) { qa[i] = j; saveQ(); updateScore(); }
+      }
+      item.o.forEach(function (txt, j) {
+        var b = document.createElement('button'); b.type = 'button'; b.textContent = txt;
+        b.addEventListener('click', function () { card.classList.remove('still'); choose(j, false); });
+        opts.appendChild(b);
+      });
+      card.appendChild(h); card.appendChild(opts); card.appendChild(ex);
+      box.appendChild(card);
+      if (qa[i] != null && item.o[qa[i]] != null) { card.classList.add('still'); choose(qa[i], true); }
+    });
+    updateScore();
+  }
+  document.getElementById('quizReset').addEventListener('click', function () { qa = []; saveQ(); buildQuiz(); });
+  buildQuiz();
+
+  // ---------- 미션 ----------
+  var KEY = 'uljin-ocean-missions-v1';
+  var DAYS = [
+    { t: '첫째 날 · 과학관 탐험', m: [
+      { id: 'm1', t: '전시에서 심해 생물을 한 종 찾아 특징 3가지를 적기' },
+      { id: 'm2', t: '동해의 해류(난류·한류)를 설명하는 전시를 찾아 내 말로 정리하기' },
+      { id: 'm3', t: '과학관에서 새롭게 알게 된 숫자 하나(수심, 수온, 크기 등) 기록하기' }
+    ]},
+    { t: '둘째 날 · 바다 관찰과 정리', m: [
+      { id: 'm4', t: '바닷가에서 생물이나 해조류를 관찰하고 사는 곳의 특징 적기' },
+      { id: 'm5', t: '해변 쓰레기를 종류별로 나누어 보고 가장 많은 종류 적기' },
+      { id: 'm6', t: '동해 퀴즈를 풀고, 틀린 문제의 이유 정리하기' }
+    ]}
+  ];
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { state = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  var daysEl = document.getElementById('days');
+  var total = 0;
+  DAYS.forEach(function (day) {
+    var card = document.createElement('div'); card.className = 'day';
+    var h = document.createElement('h3'); h.textContent = day.t; card.appendChild(h);
+    day.m.forEach(function (m) {
+      total++;
+      var row = document.createElement('div'); row.className = 'mission';
+      var cb = document.createElement('input'); cb.type = 'checkbox'; cb.id = m.id;
+      cb.checked = !!(state[m.id] && state[m.id].done);
+      var lab = document.createElement('label'); lab.htmlFor = m.id; lab.textContent = m.t;
+      var ta = document.createElement('textarea'); ta.id = m.id + '-note'; ta.placeholder = '알게 된 점을 적어 보세요';
+      ta.setAttribute('aria-label', m.t + ' 기록');
+      ta.value = (state[m.id] && state[m.id].note) || '';
+      cb.addEventListener('change', function () { state[m.id] = state[m.id] || {}; state[m.id].done = cb.checked; save(); prog(); });
+      ta.addEventListener('input', function () { state[m.id] = state[m.id] || {}; state[m.id].note = ta.value; save(); });
+      row.appendChild(cb); row.appendChild(lab); row.appendChild(ta);
+      card.appendChild(row);
+    });
+    daysEl.appendChild(card);
+  });
+  function prog() {
+    var n = daysEl.querySelectorAll('input[type=checkbox]:checked').length;
+    document.getElementById('bar').style.width = (n / total * 100) + '%';
+    document.getElementById('rider').style.left = 'calc((100% - 34px) * ' + (n / total) + ')';
+    document.getElementById('progText').textContent = n + ' / ' + total + ' 미션 완료' + (n === total ? ' · 모든 미션을 마쳤어요!' : '');
+  }
+  prog();
+
+  // ---------- 제출 · 결과 ----------
+  var SKEY = 'uljin-ocean-student-v1';
+  var nameEl = document.getElementById('stuName'), groupEl = document.getElementById('stuGroup');
+  var statusEl = document.getElementById('submitStatus'), submitBtn = document.getElementById('submitBtn'), copyBtn = document.getElementById('copyBtn');
+  try { var saved = JSON.parse(localStorage.getItem(SKEY) || '{}') || {}; nameEl.value = saved.name || ''; groupEl.value = saved.group || ''; } catch (e) {}
+  function saveMe() { try { localStorage.setItem(SKEY, JSON.stringify({ name: nameEl.value, group: groupEl.value })); } catch (e) {} }
+  nameEl.addEventListener('input', saveMe); groupEl.addEventListener('input', saveMe);
+  function setStatus(t, cls) { statusEl.textContent = t; statusEl.className = 'status' + (cls ? ' ' + cls : ''); }
+  function clip(s, n) { s = String(s || ''); return s.length > n ? s.slice(0, n) : s; }
+  function fmtTime(iso) { try { return new Date(iso).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } }
+  var MISSIONS = [];
+  DAYS.forEach(function (d) { d.m.forEach(function (m) { MISSIONS.push(m); }); });
+
+  function collect() {
+    var missions = {}, done = 0;
+    MISSIONS.forEach(function (m) {
+      var s = state[m.id] || {};
+      missions[m.id] = { done: !!s.done, note: clip(s.note, 1000) };
+      if (s.done) done++;
+    });
+    var answers = QUIZ.map(function (_, i) { return qa[i] == null ? null : qa[i]; });
+    var right = answers.filter(function (a, i) { return a === QUIZ[i].a; }).length;
+    var tried = answers.filter(function (a) { return a != null; }).length;
+    return { name: clip(nameEl.value.trim(), 20), group: clip(groupEl.value.trim(), 20), missions: missions, done: done, answers: answers, right: right, tried: tried, updatedAt: new Date().toISOString() };
+  }
+  function asText(r) {
+    var lines = ['[동해 탐구노트 결과] ' + (r.group ? r.group + ' ' : '') + (r.name || '(이름 없음)'),
+      '미션 ' + r.done + '/' + MISSIONS.length + ' · 퀴즈 ' + r.right + '/' + QUIZ.length];
+    MISSIONS.forEach(function (m) {
+      var x = r.missions[m.id];
+      lines.push((x.done ? '[완료] ' : '[미완료] ') + m.t + (x.note ? '\n  → ' + x.note.replace(/\s*\n\s*/g, ' ') : ''));
+    });
+    return lines.join('\n');
+  }
+  function copyText(t, btn) {
+    var ok = function () { var o = btn.textContent; btn.textContent = '복사했어요'; setTimeout(function () { btn.textContent = o; }, 1500); };
+    var fallback = function () {
+      var id = 'copyArea-' + btn.id, ta = document.getElementById(id);
+      if (!ta) { ta = document.createElement('textarea'); ta.id = id; ta.readOnly = true; ta.style.gridColumn = '1 / -1'; ta.style.minHeight = '140px'; btn.closest('form, section').appendChild(ta); }
+      ta.value = t; ta.focus(); ta.select();
+      btn.textContent = '아래 글을 직접 복사하세요';
+    };
+    try { navigator.clipboard.writeText(t).then(ok, fallback); } catch (e) { fallback(); }
+  }
+  copyBtn.addEventListener('click', function () { copyText(asText(collect()), copyBtn); });
+
+  var dbRef = null;
+  async function setWithRetry(ref, body) {
+    try { await ref.set(body); }
+    catch (e) {
+      if (!e || e.code !== 'unavailable') throw e;
+      await new Promise(function (r) { setTimeout(r, 500 + Math.random() * 800); });
+      await ref.set(body);
+    }
+  }
+  document.getElementById('submitForm').addEventListener('submit', async function (ev) {
+    ev.preventDefault();
+    if (!nameEl.value.trim()) { setStatus('이름을 적어야 제출할 수 있어요.', 'err'); nameEl.focus(); return; }
+    if (!dbRef) { setStatus('지금은 온라인 제출을 쓸 수 없어요. "내 결과 복사하기"를 눌러 선생님께 보내 주세요.', 'err'); return; }
+    submitBtn.disabled = true; setStatus('제출하는 중…');
+    var body = collect();
+    try {
+      await setWithRetry(dbRef, body);
+      setStatus('제출했어요! (' + fmtTime(body.updatedAt) + ') 고친 뒤 다시 제출해도 됩니다.', 'ok');
+      burst(submitBtn);
+    } catch (e) {
+      if (e && e.code === 'invalid_argument') setStatus('제출 권한이 없어요. 선생님께 이 페이지 공유 권한을 "참여자(Contributor)"로 바꿔 달라고 말해 주세요. 그동안은 "내 결과 복사하기"를 쓰세요.', 'err');
+      else if (e && e.code === 'quota_exceeded') setStatus('저장 공간이 가득 찼어요. 선생님께 알려 주세요.', 'err');
+      else setStatus('제출하지 못했어요. 잠시 뒤 다시 눌러 주세요.', 'err');
+    }
+    submitBtn.disabled = false;
+  });
+
+  // 교사 화면
+  function esc(v) { v = v == null ? '' : String(v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function table(rows, sep) {
+    var head = ['반·모둠', '이름', '미션 완료', '퀴즈 정답', '푼 문항', '제출 시각'];
+    MISSIONS.forEach(function (m, i) { head.push('미션' + (i + 1) + ' 완료'); });
+    MISSIONS.forEach(function (m, i) { head.push('미션' + (i + 1) + ' 기록'); });
+    QUIZ.forEach(function (_, i) { head.push('Q' + (i + 1)); });
+    var clean = sep === '\t' ? function (v) { return String(v == null ? '' : v).replace(/[\t\r\n]+/g, ' '); } : esc;
+    var out = [head.map(clean).join(sep)];
+    rows.forEach(function (r) {
+      var d = r.data, ms = d.missions || {}, ans = d.answers || [];
+      var line = [d.group, d.name, d.done, d.right, d.tried, fmtTime(d.updatedAt)];
+      MISSIONS.forEach(function (m) { line.push(ms[m.id] && ms[m.id].done ? 'O' : ''); });
+      MISSIONS.forEach(function (m) { line.push(ms[m.id] ? ms[m.id].note : ''); });
+      QUIZ.forEach(function (q, i) { line.push(ans[i] == null ? '' : (ans[i] === q.a ? 'O' : 'X')); });
+      out.push(line.map(clean).join(sep));
+    });
+    return out.join('\r\n');
+  }
+  function startTeacher(db, dl) {
+    document.getElementById('results').hidden = false;
+    document.getElementById('navResults').hidden = false;
+    var rows = [], open = {}, armed = null;
+    var body = document.getElementById('resBody');
+    function render() {
+      rows.sort(function (a, b) { return String(a.data.group || '').localeCompare(String(b.data.group || ''), 'ko') || String(a.data.name || '').localeCompare(String(b.data.name || ''), 'ko'); });
+      var n = rows.length;
+      document.getElementById('resEmpty').hidden = n > 0;
+      var avg = n ? rows.reduce(function (s, r) { return s + (r.data.right || 0); }, 0) / n : 0;
+      var full = rows.filter(function (r) { return r.data.done === MISSIONS.length; }).length;
+      var sum = document.getElementById('summary'); sum.innerHTML = '';
+      [['제출한 학생', n + '명', '같은 학생이 다시 내면 덮어씁니다'],
+       ['퀴즈 평균', n ? avg.toFixed(1) + ' / ' + QUIZ.length : '–', '정답 수 기준'],
+       ['미션 모두 완료', n ? full + '명' : '–', MISSIONS.length + '개 미션 기준']].forEach(function (c) {
+        var d = document.createElement('div');
+        var l = document.createElement('span'); l.className = 'label'; l.textContent = c[0];
+        var b = document.createElement('b'); b.textContent = c[1];
+        var s = document.createElement('small'); s.textContent = c[2];
+        d.appendChild(l); d.appendChild(b); d.appendChild(s); sum.appendChild(d);
+      });
+      var qs = document.getElementById('qStats');
+      qs.querySelectorAll('.bar').forEach(function (x) { x.remove(); });
+      QUIZ.forEach(function (q, i) {
+        var tried = 0, ok = 0;
+        rows.forEach(function (r) { var a = (r.data.answers || [])[i]; if (a != null) { tried++; if (a === q.a) ok++; } });
+        var pct = tried ? Math.round(ok / tried * 100) : 0;
+        var row = document.createElement('div'); row.className = 'bar';
+        var nm = document.createElement('span'); nm.textContent = 'Q' + (i + 1); nm.title = q.q;
+        var bar = document.createElement('i'); bar.style.width = pct + '%'; if (tried && pct < 50) bar.className = 'hl';
+        var v = document.createElement('span'); v.textContent = tried ? pct + '%' : '–';
+        row.appendChild(nm); row.appendChild(bar); row.appendChild(v); qs.appendChild(row);
+      });
+      body.innerHTML = '';
+      rows.forEach(function (r) {
+        var d = r.data, tr = document.createElement('tr'); tr.className = 'row'; tr.tabIndex = 0;
+        [d.group || '–', d.name || '(이름 없음)', (d.done || 0) + ' / ' + MISSIONS.length, (d.right || 0) + ' / ' + QUIZ.length, fmtTime(d.updatedAt)].forEach(function (v, k) {
+          var td = document.createElement('td'); td.textContent = v; if (k >= 2) td.className = 'num'; tr.appendChild(td);
+        });
+        var tdDel = document.createElement('td'), del = document.createElement('button');
+        del.type = 'button'; del.className = 'del' + (armed === r.id ? ' armed' : ''); del.textContent = armed === r.id ? '정말 삭제' : '삭제';
+        del.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          if (armed !== r.id) { armed = r.id; render(); setTimeout(function () { if (armed === r.id) { armed = null; render(); } }, 3000); return; }
+          armed = null; db.doc('submissions/' + r.id).delete().catch(function () { del.textContent = '삭제 실패'; });
+        });
+        tdDel.appendChild(del); tr.appendChild(tdDel);
+        function toggle() { open[r.id] = !open[r.id]; render(); }
+        tr.addEventListener('click', toggle);
+        tr.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(); } });
+        body.appendChild(tr);
+        if (open[r.id]) {
+          var dr = document.createElement('tr'); dr.className = 'detail';
+          var td = document.createElement('td'); td.colSpan = 6;
+          var dlEl = document.createElement('dl');
+          MISSIONS.forEach(function (m, i) {
+            var x = (d.missions || {})[m.id] || {};
+            var dt = document.createElement('dt'); dt.textContent = (x.done ? '[완료] ' : '[미완료] ') + '미션 ' + (i + 1) + '. ' + m.t;
+            var dd = document.createElement('dd'); dd.textContent = x.note || '(기록 없음)';
+            dlEl.appendChild(dt); dlEl.appendChild(dd);
+          });
+          var qdt = document.createElement('dt'); qdt.textContent = '퀴즈';
+          var qdd = document.createElement('dd');
+          qdd.textContent = QUIZ.map(function (q, i) { var a = (d.answers || [])[i]; return 'Q' + (i + 1) + ' ' + (a == null ? '–' : a === q.a ? 'O' : 'X'); }).join('  ');
+          dlEl.appendChild(qdt); dlEl.appendChild(qdd);
+          td.appendChild(dlEl); dr.appendChild(td); body.appendChild(dr);
+        }
+      });
+    }
+    render();
+    db.collection('submissions').onSnapshot(function (snap) {
+      rows = snap.docs.filter(function (s) { return s.exists; }).map(function (s) { return { id: s.id, data: s.data() || {} }; });
+      render();
+    }, function () { var e = document.getElementById('resEmpty'); e.hidden = false; e.textContent = '결과를 불러오지 못했어요. 페이지를 새로 고쳐 주세요.'; });
+    document.getElementById('tsvBtn').addEventListener('click', function () { copyText(table(rows, '\t'), this); });
+    var csvBtn = document.getElementById('csvBtn');
+    if (dl) {
+      csvBtn.hidden = false;
+      csvBtn.addEventListener('click', function () {
+        dl.save({ filename: '동해탐구_결과.csv', data: '﻿' + table(rows, ',') }).catch(function (e) { if (e && e.code === 'unavailable') csvBtn.hidden = true; });
+      });
+    }
+  }
+
+  (async function init() {
+    var c = window.claude, db = null, user = null, dl = null;
+    try { if (c && c.use) { db = await c.use('db'); user = await c.use('user'); dl = await c.use('downloads'); } } catch (e) {}
+    var uid = null;
+    try { uid = user ? await user.id() : null; } catch (e) {}
+    copyBtn.hidden = false;
+    if (db && uid) {
+      dbRef = db.doc('submissions/' + uid);
+      try {
+        var snap = await dbRef.get();
+        if (snap.exists) {
+          var d = snap.data() || {};
+          if (!nameEl.value && d.name) nameEl.value = d.name;
+          if (!groupEl.value && d.group) groupEl.value = d.group;
+          setStatus('이미 제출했어요 (' + fmtTime(d.updatedAt) + '). 고친 뒤 다시 제출할 수 있어요.', 'ok');
+        } else setStatus('미션을 마치면 반·이름을 적고 제출하세요.');
+      } catch (e) { setStatus('미션을 마치면 반·이름을 적고 제출하세요.'); }
+    } else {
+      submitBtn.hidden = true;
+      setStatus('이 화면에서는 온라인 제출을 쓸 수 없어요. "내 결과 복사하기"로 결과를 복사해 선생님께 보내 주세요.');
+    }
+    var teacher = false;
+    try { teacher = !!user && ((await user.isOwner()) || (await user.canEdit())); } catch (e) {}
+    if (db && teacher) startTeacher(db, dl);
+  })();
+})();
+</script>
+</body>
+</html>
