@@ -167,6 +167,18 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .score { position: sticky; bottom: 12px; justify-self: start; background: var(--ink); color: var(--bg); border-radius: 999px; padding: 8px 16px; font-family: var(--f-mono); font-size: 14px; display: flex; gap: 12px; align-items: center; }
 .score button { font: inherit; background: none; border: 0; color: inherit; text-decoration: underline; cursor: pointer; }
 
+/* 해양 골든벨 */
+.gb-tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.gb-tools .btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.gb-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+.gb-list .q { align-content: start; }
+.gb-head { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.gb-tag { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; padding: 2px 8px; border-radius: 999px; background: var(--chip); color: var(--muted); }
+.gb-tag.x2 { background: var(--accent); color: var(--accent-ink); }
+.opts.ox { grid-template-columns: 1fr 1fr; }
+.opts.ox button { text-align: center; font-family: var(--f-display); font-size: 20px; padding: 12px; }
+.gb-list .q[hidden] { display: none; }
+
 /* 활동지 */
 .days { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
 .day { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 12px; align-content: start; }
@@ -285,6 +297,7 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
     <li><a href="#climate">뜨거워지는 바다</a></li>
     <li><a href="#now">연구 현장과 트렌드</a></li>
     <li><a href="#quiz">퀴즈</a></li>
+    <li><a href="#goldenbell">골든벨 예상문제</a></li>
     <li><a href="#mission">1박 2일 미션</a></li>
     <li id="navResults" hidden><a href="#results">결과 모아보기</a></li>
   </ul>
@@ -628,10 +641,27 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
     <div class="score" id="score" aria-live="polite"><span id="scoreText">0 / 0 맞힘</span><button type="button" id="quizReset">다시 풀기</button></div>
   </section>
 
-  <!-- 7. 미션 -->
+  <!-- 8. 해양 골든벨 -->
+  <section id="goldenbell">
+    <header>
+      <p class="label">08 · 저녁 레크리에이션</p>
+      <h2>해양 골든벨 예상문제</h2>
+      <p>캠프 저녁 해양 골든벨(카훗)에 나올 30문제입니다. 실제 게임에서는 한 문제에 10초, 26~30번은 점수가 두 배예요. 답을 고르면 정답과 해설이 나옵니다.</p>
+    </header>
+    <div class="gb-tools" role="group" aria-label="문제 거르기">
+      <button type="button" class="btn" id="gbAll" aria-pressed="true">전체 30문제</button>
+      <button type="button" class="btn" id="gbOX" aria-pressed="false">O/X만</button>
+      <button type="button" class="btn" id="gbMC" aria-pressed="false">4지선다만</button>
+      <button type="button" class="btn" id="gbWrong" aria-pressed="false">틀린 문제만</button>
+    </div>
+    <div class="gb-list" id="gbBox"></div>
+    <div class="score" id="gbScore" aria-live="polite"><span id="gbScoreText">0 / 0 맞힘</span><button type="button" id="gbReset">다시 풀기</button></div>
+  </section>
+
+  <!-- 9. 미션 -->
   <section id="mission">
     <header>
-      <p class="label">08 · 활동지</p>
+      <p class="label">09 · 활동지</p>
       <h2>1박 2일 탐구 미션</h2>
       <p>미션을 마치면 체크하고, 알게 된 점을 짧게 적어 두세요. 기록은 지금 쓰는 기기의 브라우저에만 저장됩니다.</p>
     </header>
@@ -852,6 +882,104 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
   }
   document.getElementById('quizReset').addEventListener('click', function () { qa = []; saveQ(); buildQuiz(); });
   buildQuiz();
+
+  // ---------- 해양 골든벨 (카훗 실전 30문제와 같은 순서) ----------
+  var OXO = ['O (맞다)', 'X (틀리다)'];
+  function ox(q, isO, e) { return { q: q, o: OXO, a: isO ? 0 : 1, e: e, ox: true }; }
+  function mc(q, o, a, e) { return { q: q, o: o, a: a, e: e }; }
+  var GB = [
+    ox('바다는 지구 표면의 약 70%를 덮고 있다.', true, '지구 표면의 약 71%가 바다입니다.'),
+    ox('고래는 물고기처럼 아가미로 숨을 쉰다.', false, '고래는 포유류라서 폐로 숨을 쉽니다. 물 위로 올라와 숨구멍으로 호흡해요.'),
+    ox('돌고래는 물고기의 한 종류다.', false, '돌고래는 새끼를 낳아 젖을 먹이고 폐로 숨 쉬는 포유류입니다.'),
+    ox('오징어의 심장은 3개다.', true, '아가미 쪽 심장 2개와 온몸으로 피를 보내는 심장 1개가 있습니다.'),
+    ox('문어의 피는 빨간색이다.', false, '문어의 피는 파란색입니다. 산소를 나르는 물질에 구리가 들어 있어요.'),
+    ox('해파리는 뇌가 있다.', false, '해파리는 뇌가 없고, 몸 전체에 그물처럼 퍼진 신경만 있습니다.'),
+    mc('해파리 몸의 대부분(약 95%)을 이루는 것은?', ['지방', '물', '뼈', '근육'], 1, '해파리는 몸의 대부분이 물이라서 물 밖에 나오면 금세 쪼그라듭니다.'),
+    ox('해마는 수컷이 새끼를 낳는다.', true, '암컷이 수컷의 배 주머니에 알을 낳고, 수컷이 키워서 새끼를 내보냅니다.'),
+    ox('불가사리는 팔이 잘려도 다시 자란다.', true, '불가사리는 재생 능력이 뛰어나 잘린 팔이 다시 자랍니다.'),
+    ox('산호는 바닷속에 사는 식물이다.', false, '산호는 촉수로 먹이를 잡는 동물(자포동물)입니다. 몸속에 함께 사는 조류가 광합성을 도와요.'),
+    ox('바다거북은 바닷속에 알을 낳는다.', false, '바다거북은 밤에 모래사장으로 올라와 구덩이를 파고 알을 낳습니다.'),
+    ox('상어의 뼈는 대부분 물렁뼈(연골)로 되어 있다.', true, '상어와 가오리는 뼈가 연골로 된 연골어류입니다.'),
+    mc('지구에서 가장 큰 동물은?', ['고래상어', '향유고래', '범고래', '대왕고래'], 3, '대왕고래는 몸길이 30 m 가까이 자라는, 지금까지 알려진 가장 큰 동물입니다.'),
+    ox('펭귄은 주로 북극에 산다.', false, '펭귄은 남극과 남반구 바다에 삽니다. 북극에는 펭귄이 없어요.'),
+    ox('동해는 서해보다 밀물과 썰물의 높이 차이가 작다.', true, '동해는 조수 간만의 차가 작고, 서해는 커서 넓은 갯벌이 생깁니다.'),
+    ox('울진 대게의 \'대\'는 \'크다(大)\'라는 뜻이다.', false, '다리가 대나무처럼 곧고 마디가 있어서 \'대게\'라고 부릅니다.'),
+    mc('헤엄치는 힘이 약해 물에 떠다니며 사는 아주 작은 생물은?', ['플랑크톤', '산호', '해조류', '말미잘'], 0, '플랑크톤은 바다 먹이사슬의 출발점이에요.'),
+    mc('바닷물이 짠맛을 내게 하는 가장 많은 물질은?', ['염화 마그네슘', '염화 나트륨 (소금)', '탄산 칼슘', '황산 칼슘'], 1, '바닷물에 녹아 있는 물질 중 염화 나트륨이 가장 많습니다.'),
+    mc('성게, 불가사리, 해삼이 속한 동물 무리는?', ['연체동물', '절지동물', '극피동물', '자포동물'], 2, '극피동물은 \'가시 돋은 피부\'라는 뜻입니다.'),
+    mc('갯벌이 가장 넓게 발달한 우리나라 바다는?', ['동해', '남해', '서해', '모두 비슷하다'], 2, '서해는 조수 간만의 차가 크고 해안이 완만해 갯벌이 넓습니다.'),
+    mc('하루에 두 번씩 바닷물이 들어오고 나가는 현상은?', ['해류', '파도', '용승', '밀물과 썰물'], 3, '주로 달이 끌어당기는 힘 때문에 생깁니다.'),
+    ox('복어는 위험을 느끼면 물을 들이마셔 몸을 부풀린다.', true, '몸을 크게 만들어 천적이 삼키기 어렵게 합니다.'),
+    ox('문어는 다리가 8개, 오징어는 다리가 10개다.', true, '오징어는 다리 8개에 길게 뻗는 촉완 2개가 더 있습니다.'),
+    mc('동해를 따라 북쪽으로 올라오는 따뜻한 해류는?', ['북한 한류', '동한 난류', '리만 해류', '연안류'], 1, '북쪽에서 내려오는 차가운 해류는 북한한류입니다.'),
+    mc('울진군 죽변면에 있는 국립 바다 과학 전시·체험관은?', ['국립해양박물관', '국립수산과학원', '국립해양과학관', '국립해양생물자원관'], 2, '이번 캠프의 무대인 국립울진해양과학관이에요.'),
+    ox('오징어와 문어는 연체동물이다.', true, '뼈가 없고 몸이 부드러운 연체동물로, 조개·달팽이와 같은 무리입니다.'),
+    mc('다음 중 포유류가 아닌 것은?', ['돌고래', '물개', '상어', '고래'], 2, '상어는 아가미로 숨 쉬는 연골어류입니다. 나머지는 모두 포유류예요.'),
+    ox('바닷물은 깊이 내려갈수록 대체로 수온이 낮아진다.', true, '햇빛이 데우는 표층이 가장 따뜻하고, 동해 깊은 곳은 1 °C 안팎입니다. 위의 수심 탐사기로 확인해 보세요.'),
+    ox('미역과 다시마 같은 해조류는 광합성을 한다.', true, '해조류는 햇빛으로 광합성을 해 산소를 만듭니다. 그래서 빛이 드는 얕은 바다에 살아요.'),
+    mc('따뜻한 해류와 차가운 해류가 만나는 곳을 무엇이라고 할까?', ['조경수역', '용승', '해구', '대륙붕'], 0, '조경수역은 영양염이 풍부해 플랑크톤이 많고 좋은 어장이 됩니다.')
+  ];
+  var gbBox = document.getElementById('gbBox');
+  var GKEY = 'uljin-goldenbell-v1', ga = [], gbFilter = 'all';
+  try { ga = JSON.parse(localStorage.getItem(GKEY) || '[]') || []; } catch (e) { ga = []; }
+  function saveG() { try { localStorage.setItem(GKEY, JSON.stringify(ga)); } catch (e) {} }
+  function gbScore(bump) {
+    var tried = 0, ok = 0;
+    GB.forEach(function (item, i) { if (ga[i] != null) { tried++; if (ga[i] === item.a) ok++; } });
+    document.getElementById('gbScoreText').textContent = ok + ' / ' + tried + ' 맞힘 (전체 ' + GB.length + '문제)';
+    if (bump) { var s = document.getElementById('gbScore'); s.classList.remove('bump'); void s.offsetWidth; s.classList.add('bump'); }
+  }
+  function gbApplyFilter() {
+    gbBox.querySelectorAll('.q').forEach(function (card, i) {
+      var item = GB[i], show = true;
+      if (gbFilter === 'ox') show = !!item.ox;
+      else if (gbFilter === 'mc') show = !item.ox;
+      else if (gbFilter === 'wrong') show = ga[i] != null && ga[i] !== item.a;
+      card.hidden = !show;
+    });
+    [['all', 'gbAll'], ['ox', 'gbOX'], ['mc', 'gbMC'], ['wrong', 'gbWrong']].forEach(function (p) {
+      document.getElementById(p[1]).setAttribute('aria-pressed', String(gbFilter === p[0]));
+    });
+  }
+  function buildGB() {
+    gbBox.innerHTML = '';
+    GB.forEach(function (item, i) {
+      var card = document.createElement('div'); card.className = 'q';
+      var head = document.createElement('div'); head.className = 'gb-head';
+      var tag = document.createElement('span'); tag.className = 'gb-tag'; tag.textContent = item.ox ? 'O/X' : '4지선다';
+      head.appendChild(tag);
+      if (i >= 25) { var x2 = document.createElement('span'); x2.className = 'gb-tag x2'; x2.textContent = '점수 2배'; head.appendChild(x2); }
+      var h = document.createElement('h3');
+      h.innerHTML = '<span class="num">' + (i + 1) + '</span>';
+      h.appendChild(document.createTextNode(item.q));
+      var opts = document.createElement('div'); opts.className = 'opts' + (item.ox ? ' ox' : '');
+      var ex = document.createElement('p'); ex.className = 'explain'; ex.hidden = true;
+      function choose(j, quiet) {
+        var all = opts.querySelectorAll('button');
+        all.forEach(function (x) { x.disabled = true; });
+        all[item.a].classList.add('right');
+        if (j !== item.a) all[j].classList.add('wrong'); else if (!quiet) burst(all[j]);
+        ex.textContent = (j === item.a ? '정답! ' : '아쉬워요. 정답은 "' + item.o[item.a] + '". ') + item.e;
+        ex.hidden = false;
+        if (!quiet) { ga[i] = j; saveG(); gbScore(true); }
+      }
+      item.o.forEach(function (txt, j) {
+        var b = document.createElement('button'); b.type = 'button'; b.textContent = txt;
+        b.addEventListener('click', function () { card.classList.remove('still'); choose(j, false); });
+        opts.appendChild(b);
+      });
+      card.appendChild(head); card.appendChild(h); card.appendChild(opts); card.appendChild(ex);
+      gbBox.appendChild(card);
+      if (ga[i] != null && item.o[ga[i]] != null) { card.classList.add('still'); choose(ga[i], true); }
+    });
+    gbScore(false);
+    gbApplyFilter();
+  }
+  [['all', 'gbAll'], ['ox', 'gbOX'], ['mc', 'gbMC'], ['wrong', 'gbWrong']].forEach(function (p) {
+    document.getElementById(p[1]).addEventListener('click', function () { gbFilter = p[0]; gbApplyFilter(); });
+  });
+  document.getElementById('gbReset').addEventListener('click', function () { ga = []; saveG(); gbFilter = 'all'; buildGB(); });
+  buildGB();
 
   // ---------- 미션 ----------
   var KEY = 'uljin-ocean-missions-v1';
