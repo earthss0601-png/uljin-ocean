@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="춘양중학교 사제동행 해양과학 캠프 · 울진 1박 2일 동해 탐구노트">
+<meta name="description" content="춘양중학교 사제동행 해양과학 캠프 · 울진 1박 2일 춘양중 동해 탐구 노트">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>동해 탐구노트</title>
+<title>춘양중 동해 탐구 노트</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
@@ -326,7 +326,7 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
   </svg>
   <header class="hero">
     <p class="camp"><svg viewBox="0 0 64 40" aria-hidden="true"><use href="#fish"/></svg><span><b>춘양중학교</b> 사제동행 해양과학 캠프</span></p>
-    <p class="label">울진 1박 2일 · 동해 탐구노트</p>
+    <p class="label">울진 1박 2일 · 춘양중 동해 탐구 노트</p>
     <h1>동해, <span>깊이</span><br>들여다보기</h1>
     <p class="lead">울진 앞바다는 수심 수천 미터까지 이어지는 깊은 바다의 입구입니다. 선생님과 함께 이틀 동안 바다를 직접 보고, 과학관에서 배우고, 이 노트에 기록해 봅시다.</p>
     <p class="coord"><span>울진 · 약 36.9°N 129.4°E</span><span>동해 평균 수심 약 1,700 m</span><span>최대 수심 약 4,000 m</span></p>
@@ -1062,7 +1062,7 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
     return { name: clip(nameEl.value.trim(), 20), group: clip(groupEl.value.trim(), 20), missions: missions, done: done, answers: answers, right: right, tried: tried, updatedAt: new Date().toISOString() };
   }
   function asText(r) {
-    var lines = ['[동해 탐구노트 결과] ' + (r.group ? r.group + ' ' : '') + (r.name || '(이름 없음)'),
+    var lines = ['[춘양중 동해 탐구 노트 결과] ' + (r.group ? r.group + ' ' : '') + (r.name || '(이름 없음)'),
       '미션 ' + r.done + '/' + MISSIONS.length + ' · 퀴즈 ' + r.right + '/' + QUIZ.length];
     MISSIONS.forEach(function (m) {
       var x = r.missions[m.id];
@@ -1207,7 +1207,7 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
     if (dl) {
       csvBtn.hidden = false;
       csvBtn.addEventListener('click', function () {
-        dl.save({ filename: '동해탐구_결과.csv', data: '﻿' + table(rows, ',') }).catch(function (e) { if (e && e.code === 'unavailable') csvBtn.hidden = true; });
+        dl.save({ filename: '춘양중_동해탐구노트_결과.csv', data: '﻿' + table(rows, ',') }).catch(function (e) { if (e && e.code === 'unavailable') csvBtn.hidden = true; });
       });
     }
   }
