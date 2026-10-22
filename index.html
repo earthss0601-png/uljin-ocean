@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="울진 해양과학 1박 2일 프로그램 중학생 동해 탐구노트">
+<meta name="description" content="춘양중학교 사제동행 해양과학 캠프 · 울진 1박 2일 동해 탐구노트">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>동해 탐구노트</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -234,6 +234,14 @@ tr.detail td { background: var(--bg); }
 
 /* 귀여운 움직임 */
 header.hero h1 span { display: inline-block; animation: bob 3s ease-in-out infinite; }
+.camp {
+  justify-self: start; display: inline-flex; align-items: center; gap: 10px;
+  background: var(--accent); color: var(--accent-ink); border-radius: 999px; padding: 8px 18px 8px 10px;
+  font-family: var(--f-display); font-size: clamp(18px, 4vw, 24px); line-height: 1.2; max-width: 100%;
+  animation: pop .6s cubic-bezier(.3,1.6,.5,1) both;
+}
+.camp b { font-weight: 400; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.camp svg { width: 40px; flex: none; color: #fff3bf; animation: bob 2.2s ease-in-out infinite; }
 .scene {
   position: relative; height: 150px; border-radius: 14px; overflow: hidden;
   background: linear-gradient(to bottom, color-mix(in srgb, var(--sea-1) 35%, var(--bg)), color-mix(in srgb, var(--sea-2) 45%, var(--bg)));
@@ -317,9 +325,10 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
     </defs>
   </svg>
   <header class="hero">
-    <p class="label">울진 해양과학 1박 2일 · 중학생 탐구노트</p>
+    <p class="camp"><svg viewBox="0 0 64 40" aria-hidden="true"><use href="#fish"/></svg><span><b>춘양중학교</b> 사제동행 해양과학 캠프</span></p>
+    <p class="label">울진 1박 2일 · 동해 탐구노트</p>
     <h1>동해, <span>깊이</span><br>들여다보기</h1>
-    <p class="lead">울진 앞바다는 수심 수천 미터까지 이어지는 깊은 바다의 입구입니다. 이틀 동안 바다를 직접 보고, 과학관에서 배우고, 이 노트에 기록해 봅시다.</p>
+    <p class="lead">울진 앞바다는 수심 수천 미터까지 이어지는 깊은 바다의 입구입니다. 선생님과 함께 이틀 동안 바다를 직접 보고, 과학관에서 배우고, 이 노트에 기록해 봅시다.</p>
     <p class="coord"><span>울진 · 약 36.9°N 129.4°E</span><span>동해 평균 수심 약 1,700 m</span><span>최대 수심 약 4,000 m</span></p>
     <div class="scene" aria-hidden="true">
       <div class="wave"></div>
@@ -708,7 +717,7 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
   <footer>
     <p>수치는 교육용 대략값입니다. 정확한 값은 국립해양조사원, 국립수산과학원 등 공공기관 자료에서 확인할 수 있습니다.</p>
     <p>연구 현장 참고: <a href="https://www.dt.co.kr/article/12066586" target="_blank" rel="noopener">디지털타임스, 왕돌초 해양과학기지 준공 (2026. 6. 9.)</a> · <a href="https://www.idaegu.co.kr/news/articleView.html?idxno=556149" target="_blank" rel="noopener">대구신문, 국립울진해양과학관 소개</a></p>
-    <p>울진 해양과학 1박 2일 프로그램 학습 자료</p>
+    <p>춘양중학교 사제동행 해양과학 캠프 · 울진 1박 2일 학습 자료</p>
   </footer>
 </div>
 
